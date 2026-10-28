@@ -1,0 +1,28 @@
+# ========================================================
+# PENGAMANAN SERVER APACHE (NIKAHKITA)
+# ========================================================
+
+# 1. Nonaktifkan Directory Browsing (Mencegah intip isi folder)
+Options -Indexes
+
+# 2. Blokir akses HTTP langsung ke file sensitif
+# (.env, .git, file konfigurasi, database sql dump, dan log)
+<IfModule mod_authz_core.c>
+    <FilesMatch "^\.(env|git|htaccess)|(\.(sql|log))$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+    <FilesMatch "^\.(env|git|htaccess)|(\.(sql|log))$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+</IfModule>
+
+# 3. Proteksi folder api_core dan phpmailer dari akses publik langsung
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Cegah akses langsung ke folder tersembunyi
+    RewriteRule "(^|/)\.(?!well-known)" - [F]
+</IfModule>

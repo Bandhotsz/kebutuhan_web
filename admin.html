@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin Panel - Nikah Yuk">
+  <title>Admin Panel - Nikah Yuk</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg sticky-top" id="main-navbar">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand d-flex align-items-center gap-3" href="index.html" style="text-decoration: none;">
+        <div class="brand-icon-aesthetic" style="width: 45px; height: 45px; background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); border: 2px solid rgba(255,255,255,0.2);">
+          <i class="bi bi-suit-heart-fill" style="color: #fff; font-size: 20px;"></i>
+        </div>
+        <div class="d-flex flex-column justify-content-center">
+          <span class="brand-text" style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: 1px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">Nikah Yuk</span>
+          <span style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 3px; text-transform: uppercase; line-height: 1;">Admin Panel</span>
+        </div>
+      </a>
+      <div class="d-flex align-items-center gap-3">
+        <a href="index.html" class="btn btn-outline-light btn-sm"><i class="bi bi-globe"></i> Ke Website</a>
+        <button class="btn btn-danger btn-sm" onclick="handleLogout()"><i class="bi bi-box-arrow-right"></i> Keluar</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ADMIN SECTION -->
+  <section id="section-admin-dashboard" class="section-page active">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Admin Sidebar -->
+        <div class="col-lg-2 admin-sidebar-col">
+          <div class="admin-sidebar">
+            <div class="sidebar-brand mb-4">
+              <i class="bi bi-heart-fill text-primary"></i> Admin Panel
+            </div>
+            <nav class="nav flex-column gap-1">
+              <button class="nav-link admin-nav active" data-tab="dashboard" onclick="switchAdminTab('dashboard')"><i class="bi bi-speedometer2"></i> Dashboard</button>
+              <button class="nav-link admin-nav" data-tab="templates" onclick="switchAdminTab('templates')"><i class="bi bi-grid-3x3-gap"></i> Kelola Template</button>
+              <button class="nav-link admin-nav" data-tab="orders" onclick="switchAdminTab('orders')"><i class="bi bi-bag-check"></i> Kelola Pesanan</button>
+              <button class="nav-link admin-nav" data-tab="payments" onclick="switchAdminTab('payments')"><i class="bi bi-credit-card-2-front"></i> Verifikasi Pembayaran</button>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Admin Main Content -->
+        <div class="col-lg-10 p-4">
+
+          <!-- Admin: Dashboard -->
+          <div id="admin-tab-dashboard" class="admin-tab-content active">
+            <h3 class="fw-bold mb-1">Dashboard Admin</h3>
+            <p class="text-muted mb-4">Ringkasan statistik dan aktivitas platform</p>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-3 col-6">
+                <div class="stat-card-admin">
+                  <div class="stat-icon-admin bg-primary-subtle text-primary"><i class="bi bi-currency-dollar"></i></div>
+                  <div><span class="stat-label-admin">Total Pendapatan</span><br><strong id="stat-revenue" class="fs-5">Rp 0</strong></div>
+                </div>
+              </div>
+              <div class="col-md-3 col-6">
+                <div class="stat-card-admin">
+                  <div class="stat-icon-admin bg-success-subtle text-success"><i class="bi bi-bag"></i></div>
+                  <div><span class="stat-label-admin">Total Pesanan</span><br><strong id="stat-orders" class="fs-5">0</strong></div>
+                </div>
+              </div>
+              <div class="col-md-3 col-6">
+                <div class="stat-card-admin">
+                  <div class="stat-icon-admin bg-info-subtle text-info"><i class="bi bi-people"></i></div>
+                  <div><span class="stat-label-admin">Total Pengguna</span><br><strong id="stat-users" class="fs-5">0</strong></div>
+                </div>
+              </div>
+              <div class="col-md-3 col-6">
+                <div class="stat-card-admin">
+                  <div class="stat-icon-admin bg-warning-subtle text-warning"><i class="bi bi-clock-history"></i></div>
+                  <div><span class="stat-label-admin">Menunggu Verifikasi</span><br><strong id="stat-pending" class="fs-5">0</strong></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart & Recent -->
+            <div class="row g-4">
+              <div class="col-lg-7">
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body">
+                    <h6 class="fw-bold mb-3">Pendapatan per Kategori</h6>
+                    <div id="admin-chart" class="chart-container"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body">
+                    <h6 class="fw-bold mb-3">Pesanan Terbaru</h6>
+                    <div class="table-responsive">
+                      <table class="table table-sm">
+                        <thead><tr><th>ID</th><th>Pelanggan</th><th>Total</th><th>Status</th></tr></thead>
+                        <tbody id="recent-orders-body"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin: Templates -->
+          <div id="admin-tab-templates" class="admin-tab-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div>
+                <h3 class="fw-bold mb-1">Kelola Template</h3>
+                <p class="text-muted mb-0">Tambah, edit, dan hapus template undangan</p>
+              </div>
+              <button class="btn btn-primary" onclick="openAddTemplateModal()"><i class="bi bi-plus-lg"></i> Tambah Template</button>
+            </div>
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="table-light"><tr><th>Template</th><th>Kategori</th><th>Harga</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="admin-templates-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin: Orders -->
+          <div id="admin-tab-orders" class="admin-tab-content">
+            <h3 class="fw-bold mb-1">Kelola Pesanan</h3>
+            <p class="text-muted mb-4">Proses dan kelola pesanan pelanggan</p>
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="table-light"><tr><th>Order ID</th><th>Pelanggan</th><th>Template</th><th>Total</th><th>Pembayaran</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="admin-orders-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin: Payments Verification -->
+          <div id="admin-tab-payments" class="admin-tab-content">
+            <h3 class="fw-bold mb-1">Verifikasi Pembayaran</h3>
+            <p class="text-muted mb-4">Verifikasi bukti pembayaran dari pelanggan</p>
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="table-light"><tr><th>Order ID</th><th>Pelanggan</th><th>Total</th><th>Bukti Bayar</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="admin-payments-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODALS -->
+  <!-- Modal: Admin Add/Edit Template -->
+  <div class="modal fade" id="adminTemplateModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-lg-down modal-dialog-scrollable">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold" id="admin-template-modal-title">Tambah Template</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="admin-template-form" onsubmit="handleSaveTemplate(event)">
+          <input type="hidden" id="admin-tmpl-id">
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">Nama Template</label>
+                <input type="text" class="form-control" id="admin-tmpl-name" required placeholder="Nama template undangan">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Kategori</label>
+                <select class="form-select" id="admin-tmpl-category" required>
+                  <option value="Elegan">Elegan</option>
+                  <option value="Tradisional">Tradisional</option>
+                  <option value="Modern">Modern</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Harga (Rp)</label>
+                <input type="number" class="form-control" id="admin-tmpl-price" required min="0" placeholder="150000">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Deskripsi</label>
+                <textarea class="form-control" id="admin-tmpl-desc" rows="3" placeholder="Deskripsi template..."></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Fitur (pisahkan dengan koma)</label>
+                <input type="text" class="form-control" id="admin-tmpl-features" placeholder="Animasi, Galeri foto, RSVP...">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Warna Preview</label>
+                <input type="color" class="form-control form-control-color w-100" id="admin-tmpl-color" value="#d4a373">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Simpan Template</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: View Payment Proof (Admin) -->
+  <div class="modal fade" id="viewPaymentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold">Bukti Pembayaran</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="view-payment-img" class="img-fluid rounded" style="max-height:400px;">
+          <div class="mt-3" id="view-payment-info"></div>
+        </div>
+        <div class="modal-footer border-0">
+          <input type="hidden" id="view-payment-order-id">
+          <button class="btn btn-danger" onclick="handleVerifyPayment('Ditolak')"><i class="bi bi-x-lg"></i> Tolak</button>
+          <button class="btn btn-success" onclick="handleVerifyPayment('Terverifikasi')"><i class="bi bi-check-lg"></i> Verifikasi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Config & App JS -->
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

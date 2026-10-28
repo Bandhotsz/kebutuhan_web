@@ -1,0 +1,30 @@
+# Environment & Secret Configurations
+.env
+.env.*
+!.env.example
+
+# Temporary, Archive & Testing Files
+*.zip
+*.rar
+*.tar.gz
+screenshot-*.png
+
+# Sub-project Laravel dependencies & build (nikahkita-v2)
+nikahkita-v2/node_modules/
+nikahkita-v2/vendor/
+nikahkita-v2/.env
+nikahkita-v2/.env.backup
+nikahkita-v2/.env.production
+nikahkita-v2/public/build/
+nikahkita-v2/public/hot/
+nikahkita-v2/public/storage
+nikahkita-v2/storage/*.key
+nikahkita-v2/storage/logs/*.log
+nikahkita-v2/.phpunit.result.cache
+
+# IDE, OS & System Files
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+*.log

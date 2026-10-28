@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nikah Yuk - Platform E-Commerce Pemesanan Undangan Pernikahan Digital Berbasis Web. Pilih template, kustomisasi, dan bagikan undangan digital Anda.">
+  <title>Nikah Yuk - Undangan Pernikahan Digital</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Google Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Midtrans Snap -->
+  <script type="text/javascript"
+    src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="SB-Mid-client-YOUR_CLIENT_KEY"></script>
+</head>
+<body>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;"></div>
+
+  <!-- ============================
+       NAVBAR
+       ============================ -->
+  <nav class="navbar navbar-expand-lg sticky-top" id="main-navbar">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-3" href="#" onclick="showPage('home')" style="text-decoration: none;">
+        <div class="brand-icon-aesthetic" style="width: 45px; height: 45px; background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); border: 2px solid rgba(255,255,255,0.2);">
+          <i class="bi bi-suit-heart-fill" style="color: #fff; font-size: 20px;"></i>
+        </div>
+        <div class="d-flex flex-column justify-content-center">
+          <span class="brand-text" style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: 1px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">Nikah Yuk</span>
+          <span style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 3px; text-transform: uppercase; line-height: 1;">Digital Platform</span>
+        </div>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto" id="nav-links-buyer">
+          <li class="nav-item"><a class="nav-link active" href="#" onclick="showSection('home')">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('catalog')">Katalog Template</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('my-orders')">Pesanan Saya</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('my-invitations')">Undangan Saya</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('contact')">Hubungi Kami</a></li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-2" id="auth-buttons">
+          <!-- Shown when NOT logged in -->
+          <div id="btn-group-guest">
+            <button class="btn btn-outline-light btn-sm" onclick="openModal('loginModal')"><i class="bi bi-box-arrow-in-right"></i> Masuk</button>
+            <button class="btn btn-light text-primary fw-bold btn-sm" onclick="openModal('registerModal')"><i class="bi bi-person-plus"></i> Daftar</button>
+          </div>
+          <!-- Shown when logged in -->
+          <div id="btn-group-user" class="d-none">
+            <div class="dropdown">
+              <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle"></i> <span id="user-display-name">User</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#" onclick="showSection('my-orders')"><i class="bi bi-bag"></i> Pesanan Saya</a></li>
+                <li><a class="dropdown-item" href="#" onclick="showSection('my-invitations')"><i class="bi bi-envelope-heart"></i> Undangan Saya</a></li>
+                <li id="admin-menu-link" class="d-none"><a class="dropdown-item" href="admin.html"><i class="bi bi-speedometer2"></i> Admin Panel</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#" onclick="handleLogout()"><i class="bi bi-box-arrow-right"></i> Keluar</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================
+       HERO SECTION (HOME)
+       ============================ -->
+  <section id="section-home" class="section-page active">
+    <div class="hero-section">
+      <div class="hero-overlay"></div>
+      <div class="container position-relative" style="z-index:2;">
+        <div class="row align-items-center min-vh-75">
+          <div class="col-lg-7">
+            <span class="badge bg-primary-subtle text-primary-emphasis mb-3 px-3 py-2 rounded-pill fw-bold">
+              <i class="bi bi-stars"></i> Platform Undangan Digital #1
+            </span>
+            <h1 class="hero-title">Wujudkan Undangan Pernikahan <span class="text-gradient">Digital Impian</span> Anda</h1>
+            <p class="hero-subtitle">Pilih dari berbagai template elegan, tradisional, dan modern. Kustomisasi dengan data pernikahan Anda dan bagikan ke seluruh tamu dengan mudah.</p>
+            <div class="d-flex gap-3 flex-wrap">
+              <button class="btn btn-primary btn-lg px-4" onclick="showSection('catalog')">
+                <i class="bi bi-grid"></i> Lihat Katalog
+              </button>
+              <button class="btn btn-outline-light btn-lg px-4" onclick="showSection('contact')">
+                <i class="bi bi-chat-dots"></i> Hubungi Kami
+              </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="row mt-5 g-3">
+              <div class="col-auto"><div class="stat-badge"><strong>500+</strong><span>Template</span></div></div>
+              <div class="col-auto"><div class="stat-badge"><strong>10K+</strong><span>Pelanggan</span></div></div>
+              <div class="col-auto"><div class="stat-badge"><strong>4.9</strong><span>Rating ★</span></div></div>
+            </div>
+          </div>
+          <div class="col-lg-5 d-none d-lg-block">
+            <div class="hero-preview-card">
+              <div class="preview-ornament top-left"></div>
+              <div class="preview-ornament top-right"></div>
+              <div class="preview-inner">
+                <p class="preview-label">Best Seller</p>
+                <h2 class="preview-names">Classic Gold</h2>
+                <div class="preview-date mt-3 mb-2" style="font-size: 1.2rem; color: #d4af37;">
+                  Rp 150.000
+                </div>
+                <p class="preview-loc"><i class="bi bi-star-fill text-warning"></i> 4.9/5 (2.5k Terjual)</p>
+              </div>
+              <div class="preview-ornament bottom-left"></div>
+              <div class="preview-ornament bottom-right"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Mengapa Memilih <span class="text-gradient">Nikah Yuk</span>?</h2>
+        <p class="text-muted">Fitur lengkap untuk undangan pernikahan digital Anda</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon bg-primary-subtle"><i class="bi bi-palette text-primary"></i></div>
+            <h5>Template Premium</h5>
+            <p>Pilih dari koleksi template Elegan, Tradisional, dan Modern yang dirancang oleh desainer profesional.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon bg-success-subtle"><i class="bi bi-pencil-square text-success"></i></div>
+            <h5>Kustomisasi Mudah</h5>
+            <p>Isi data mempelai, tanggal, lokasi, dan pesan khusus. Undangan langsung siap dibagikan.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon bg-warning-subtle"><i class="bi bi-people text-warning"></i></div>
+            <h5>RSVP Online</h5>
+            <p>Tamu dapat mengkonfirmasi kehadiran langsung melalui undangan digital dengan sistem RSVP terintegrasi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+       CATALOG SECTION
+       ============================ -->
+  <section id="section-catalog" class="section-page">
+    <div class="container py-5">
+      <div class="text-center mb-4">
+        <h2 class="section-title">Katalog <span class="text-gradient">Template Undangan</span></h2>
+        <p class="text-muted">Pilih template yang sesuai dengan selera dan tema pernikahan Anda</p>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap" id="category-filters">
+        <button class="btn btn-filter active" data-category="All" onclick="filterTemplates('All')">Semua</button>
+        <button class="btn btn-filter" data-category="Elegan" onclick="filterTemplates('Elegan')">✨ Elegan</button>
+        <button class="btn btn-filter" data-category="Tradisional" onclick="filterTemplates('Tradisional')">🏛 Tradisional</button>
+        <button class="btn btn-filter" data-category="Modern" onclick="filterTemplates('Modern')">🚀 Modern</button>
+      </div>
+
+      <!-- Sort -->
+      <div class="d-flex justify-content-end mb-3">
+        <select class="form-select form-select-sm w-auto" id="sort-select" onchange="handleSort(this.value)">
+          <option value="featured">Unggulan</option>
+          <option value="price-low">Harga: Rendah ke Tinggi</option>
+          <option value="price-high">Harga: Tinggi ke Rendah</option>
+        </select>
+      </div>
+
+      <!-- Template Grid -->
+      <div class="row g-4" id="template-grid">
+        <!-- Dynamic template cards -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+       MY ORDERS SECTION
+       ============================ -->
+  <section id="section-my-orders" class="section-page">
+    <div class="container py-5">
+      <h2 class="section-title mb-2">Pesanan <span class="text-gradient">Saya</span></h2>
+      <p class="text-muted mb-4">Riwayat pemesanan dan status pembayaran Anda</p>
+      <div id="my-orders-container">
+        <!-- Dynamic orders -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+       MY INVITATIONS SECTION
+       ============================ -->
+  <section id="section-my-invitations" class="section-page">
+    <div class="container py-5">
+      <h2 class="section-title mb-2">Undangan <span class="text-gradient">Saya</span></h2>
+      <p class="text-muted mb-4">Kelola dan bagikan undangan pernikahan digital Anda</p>
+      <div id="my-invitations-container">
+        <!-- Dynamic invitations -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+       CONTACT US SECTION
+       ============================ -->
+  <section id="section-contact" class="section-page">
+    <div class="container py-5">
+      <h2 class="section-title mb-2">Hubungi <span class="text-gradient">Kami</span></h2>
+      <p class="text-muted mb-4">Kami siap membantu Anda. Silakan kirimkan pesan atau hubungi kontak Customer Service kami.</p>
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h5 class="fw-bold mb-3"><i class="bi bi-envelope"></i> Kirim Pesan</h5>
+              <form id="contact-form">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" required placeholder="Nama Anda">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Alamat Email</label>
+                    <input type="email" class="form-control" required placeholder="email@domain.com">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Subjek</label>
+                    <input type="text" class="form-control" required placeholder="Tulis subjek pesan">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Isi Pesan</label>
+                    <textarea class="form-control" rows="5" required placeholder="Tulis pesan Anda..."></textarea>
+                  </div>
+                  <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> Kirim Pesan</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4 d-flex flex-column gap-4">
+              <h5 class="fw-bold"><i class="bi bi-headset"></i> Layanan Pelanggan</h5>
+              <div>
+                <h6 class="text-primary fw-bold"><i class="bi bi-geo-alt-fill"></i> Kantor Pusat</h6>
+                <p class="text-muted mb-0">Jl. Sudirman No. 1, Jakarta Pusat, DKI Jakarta 10210</p>
+              </div>
+              <div>
+                <h6 class="text-primary fw-bold"><i class="bi bi-envelope-fill"></i> Email Dukungan</h6>
+                <p class="text-muted mb-0">support@nikahyuk.com<br>info@nikahyuk.com</p>
+              </div>
+              <div>
+                <h6 class="text-primary fw-bold"><i class="bi bi-telephone-fill"></i> Telepon / WhatsApp</h6>
+                <p class="text-muted mb-0">+62 812-3456-7890<br>+62 21-555-9832</p>
+              </div>
+              <div class="mt-auto pt-3 border-top small text-muted">
+                Jam Operasional:<br>
+                Senin - Jumat: 09.00 - 18.00 WIB<br>
+                Sabtu: 09.00 - 15.00 WIB (Minggu Libur)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================
+       MODALS
+       ============================ -->
+
+  <!-- Modal: Login -->
+  <div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold"><i class="bi bi-heart-fill text-primary"></i> Masuk ke Nikah Yuk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="login-form" onsubmit="handleLogin(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Alamat Email</label>
+              <input type="email" class="form-control" id="login-email" required placeholder="email@domain.com">
+            </div>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label mb-0">Password</label>
+                <a href="#" class="text-decoration-none small" onclick="closeModal('loginModal'); openModal('forgotPasswordModal')">Lupa Password?</a>
+              </div>
+              <input type="password" class="form-control mt-2" id="login-password" required placeholder="Masukkan password">
+            </div>
+            
+            <div class="text-center my-3 text-muted position-relative">
+              <hr>
+              <span class="bg-white px-2 position-absolute top-50 start-50 translate-middle small">Atau masuk dengan</span>
+            </div>
+            
+            <!-- Tempat Google Client ID -->
+            <div id="g_id_onload"
+                 data-client_id="52775089404-ep5lf4c1fa9edd14gc78rms9qb9q2p76.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleGoogleLogin"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin d-flex justify-content-center"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
+            
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-link text-muted" onclick="closeModal('loginModal'); openModal('registerModal')">Belum punya akun? Daftar</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i> Masuk</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Register -->
+  <div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill text-primary"></i> Daftar Akun Baru</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="register-form" onsubmit="handleRegister(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Nama Lengkap</label>
+              <input type="text" class="form-control" id="reg-name" required placeholder="Nama Lengkap Anda">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Alamat Email</label>
+              <input type="email" class="form-control" id="reg-email" required placeholder="email@domain.com">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">No. Telepon</label>
+              <input type="tel" class="form-control" id="reg-phone" placeholder="08xxxxxxxxxx">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" id="reg-password" required minlength="6" placeholder="Minimal 6 karakter">
+            </div>
+            <div class="text-center my-3 text-muted position-relative">
+              <hr>
+              <span class="bg-white px-2 position-absolute top-50 start-50 translate-middle small">Atau daftar dengan</span>
+            </div>
+            
+            <div class="g_id_signin d-flex justify-content-center"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="signup_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
+
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-link text-muted" onclick="closeModal('registerModal'); openModal('loginModal')">Sudah punya akun? Masuk</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-person-check"></i> Daftar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: OTP Verification -->
+  <div class="modal fade" id="otpModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold"><i class="bi bi-shield-check text-success"></i> Verifikasi OTP</h5>
+        </div>
+        <form id="otp-form" onsubmit="handleVerifyOTP(event)">
+          <div class="modal-body text-center">
+            <p class="text-muted small">Masukkan kode OTP 6 digit yang telah dikirim ke email Anda.</p>
+            <input type="text" class="form-control text-center fw-bold fs-4 mb-3" id="otp-input" maxlength="6" required placeholder="______" style="letter-spacing: 8px;">
+            <input type="hidden" id="otp-email">
+            <div id="otp-preview-box" class="alert alert-info small" style="display:none;">
+              <i class="bi bi-info-circle"></i> <strong>Dev Mode:</strong> Kode OTP: <span id="otp-preview-code"></span>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0 justify-content-between">
+            <button type="button" class="btn btn-link btn-sm text-muted" onclick="handleResendOTP()">Kirim Ulang OTP</button>
+            <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Verifikasi</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Forgot Password -->
+  <div class="modal fade" id="forgotPasswordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold"><i class="bi bi-key text-warning"></i> Lupa Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="forgot-password-form" onsubmit="handleForgotPassword(event)">
+          <div class="modal-body">
+            <p class="text-muted small mb-3">Masukkan alamat email akun Anda. Kami akan mengirimkan kode OTP untuk mereset password.</p>
+            <div class="mb-3">
+              <label class="form-label">Alamat Email</label>
+              <input type="email" class="form-control" id="forgot-email" required placeholder="email@domain.com">
+            </div>
+            <div id="forgot-otp-preview-box" class="alert alert-info small" style="display:none;">
+              <i class="bi bi-info-circle"></i> <strong>Dev Mode:</strong> Kode OTP Reset: <span id="forgot-otp-preview-code"></span>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0 justify-content-between">
+            <button type="button" class="btn btn-link btn-sm text-muted" onclick="closeModal('forgotPasswordModal'); openModal('loginModal')">Kembali ke Login</button>
+            <button type="submit" class="btn btn-primary" id="btn-forgot-password"><i class="bi bi-send"></i> Kirim OTP</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reset Password -->
+  <div class="modal fade" id="resetPasswordModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold"><i class="bi bi-unlock text-success"></i> Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="closeModal('resetPasswordModal'); openModal('loginModal')"></button>
+        </div>
+        <form id="reset-password-form" onsubmit="handleResetPassword(event)">
+          <div class="modal-body">
+            <input type="hidden" id="reset-email">
+            <div class="mb-3">
+              <label class="form-label">Kode OTP 6 Digit</label>
+              <input type="text" class="form-control text-center fw-bold fs-4" id="reset-otp-input" maxlength="6" required placeholder="______" style="letter-spacing: 8px;">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password Baru</label>
+              <input type="password" class="form-control" id="reset-new-password" required minlength="6" placeholder="Minimal 6 karakter">
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Simpan Password Baru</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Template Detail -->
+  <div class="modal fade" id="templateDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold">Detail Template</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="template-detail-body">
+          <!-- Dynamic content -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Checkout / Order -->
+  <div class="modal fade" id="checkoutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold"><i class="bi bi-bag-check text-primary"></i> Pesan Template</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="checkout-form" onsubmit="handleCheckout(event)">
+          <div class="modal-body">
+            <div class="alert alert-light border mb-3" id="checkout-summary">
+              <!-- Order summary -->
+            </div>
+            <input type="hidden" id="checkout-template-id">
+            <input type="hidden" id="checkout-total">
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-cart-check"></i> Buat Pesanan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Customize Invitation -->
+  <div class="modal fade" id="customizeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square text-primary"></i> Kustomisasi Undangan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="customize-form" onsubmit="handleSaveInvitation(event)">
+          <div class="modal-body">
+            <input type="hidden" id="cust-order-id">
+            <input type="hidden" id="cust-template-id">
+            <h6 class="fw-bold text-primary mb-3"><i class="bi bi-person-hearts"></i> Data Mempelai</h6>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">Nama Mempelai Pria</label>
+                <input type="text" class="form-control" id="cust-groom" required placeholder="Nama lengkap mempelai pria">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Nama Mempelai Wanita</label>
+                <input type="text" class="form-control" id="cust-bride" required placeholder="Nama lengkap mempelai wanita">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Ayah Mempelai Pria</label>
+                <input type="text" class="form-control" id="cust-groom-father" placeholder="Nama ayah">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Ibu Mempelai Pria</label>
+                <input type="text" class="form-control" id="cust-groom-mother" placeholder="Nama ibu">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Ayah Mempelai Wanita</label>
+                <input type="text" class="form-control" id="cust-bride-father" placeholder="Nama ayah">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Ibu Mempelai Wanita</label>
+                <input type="text" class="form-control" id="cust-bride-mother" placeholder="Nama ibu">
+              </div>
+            </div>
+
+            <h6 class="fw-bold text-primary mb-3"><i class="bi bi-calendar-event"></i> Detail Acara</h6>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">Tanggal Pernikahan</label>
+                <input type="date" class="form-control" id="cust-date" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Waktu Acara</label>
+                <input type="time" class="form-control" id="cust-time" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Lokasi Akad Nikah</label>
+                <textarea class="form-control" id="cust-ceremony" rows="2" required placeholder="Nama tempat, alamat lengkap"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Lokasi Resepsi (Opsional)</label>
+                <textarea class="form-control" id="cust-reception" rows="2" placeholder="Nama tempat, alamat lengkap"></textarea>
+              </div>
+            </div>
+
+            <h6 class="fw-bold text-primary mb-3"><i class="bi bi-palette"></i> Personalisasi</h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Musik Latar</label>
+                <select class="form-select" id="cust-music">
+                  <option value="default">Default (Romantis)</option>
+                  <option value="traditional">Gamelan Jawa</option>
+                  <option value="modern">Pop Romantis</option>
+                  <option value="islamic">Nasheed</option>
+                  <option value="none">Tanpa Musik</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Warna Tema</label>
+                <input type="color" class="form-control form-control-color w-100" id="cust-color" value="#d4a373">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Cerita Cinta (Opsional)</label>
+                <textarea class="form-control" id="cust-lovestory" rows="3" placeholder="Ceritakan kisah perkenalan dan perjalanan cinta kalian..."></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Pesan Khusus untuk Tamu</label>
+                <textarea class="form-control" id="cust-message" rows="2" placeholder="Merupakan suatu kehormatan bagi kami..."></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Simpan & Buat Undangan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Footer -->
+  <footer class="site-footer mt-auto">
+    <div class="container text-center">
+      <div class="mb-2">
+        <i class="bi bi-heart-fill text-primary"></i> <strong>Nikah Yuk</strong> — Platform Undangan Pernikahan Digital
+      </div>
+      <p class="small text-muted mb-1">Rancang Bangun Sistem E-Commerce Pemesanan Undangan Pernikahan Digital Berbasis Web</p>
+      <p class="small text-muted mb-0">Muhammad Khusilmiani Rizki Julianto — NIM: 2411070029 — STIKOM EL RAHMA © 2026</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Config & App JS -->
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
